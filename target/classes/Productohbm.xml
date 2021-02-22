@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Modelos.Producto" table="producto" schema="supermarkt">
+        <id name="idProducto">
+            <column name="idProducto" sql-type="int(11)"/>
+        </id>
+        <property name="nombreProducto">
+            <column name="nombreProducto" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
+        <property name="precioVenta">
+            <column name="precioVenta" sql-type="decimal(10)" precision="10" not-null="true"/>
+        </property>
+        <property name="precioProveedor">
+            <column name="precioProveedor" sql-type="decimal(10)" precision="10" not-null="true"/>
+        </property>
+        <property name="cantidadStock">
+            <column name="cantidadStock" sql-type="int(11)" not-null="true"/>
+        </property>
+        <set name="detallesByIdProducto" inverse="true">
+            <key>
+                <column name="idProducto" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="Modelos.Detalle"/>
+        </set>
+    </class>
+</hibernate-mapping>

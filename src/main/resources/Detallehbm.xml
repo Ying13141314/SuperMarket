@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="Modelos.Detalle" table="detalle" schema="supermarkt">
+        <id name="idDetalle">
+            <column name="idDetalle" sql-type="int(11)"/>
+        </id>
+        <property name="cantidadVenta">
+            <column name="cantidadVenta" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="idProducto">
+            <column name="idProducto" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="idCompra">
+            <column name="idCompra" sql-type="int(11)" not-null="true"/>
+        </property>
+        <many-to-one name="productoByIdProducto" class="Modelos.Producto" insert="false" update="false">
+            <column name="idProducto" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="compraByIdCompra" class="Modelos.Compra" insert="false" update="false">
+            <column name="idCompra" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>
