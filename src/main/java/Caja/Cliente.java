@@ -2,7 +2,15 @@ package Caja;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
+
+import Modelos.Producto;
+import Utils.Utils;
 
 public class Cliente {
     String Host = "localhost";
@@ -19,13 +27,11 @@ public class Cliente {
      */
     private int idEmpleado;
 
-    private int cantidad;
 
-    private InputStream entrada;
+    private final InputStream entrada;
 
-    private OutputStream salida;
+    private final OutputStream salida;
 
-    private int opcionProducto;
 
     public Cliente() throws IOException {
         miScanner = new Scanner(System.in);
@@ -46,7 +52,7 @@ public class Cliente {
 
         // ENVIO el login al servidor
         System.out.println("¡Hola empleado, loguease por favor!");
-        idEmpleado=validacionNumero();
+        idEmpleado = Utils.validacionNumero(miScanner);
         flujoSalida.writeUTF("Login;"+idEmpleado);
 
         // CREO FLUJO DE ENTRADA AL SERVIDOR
@@ -63,7 +69,7 @@ public class Cliente {
     }// fin de main
 
 
-    private void menu() throws IOException {
+    private void menu() throws IOException, ClassNotFoundException {
         int opcion;
         boolean continuar = true;
 
@@ -73,114 +79,79 @@ public class Cliente {
             System.out.println("2.Obtener la caja del día");
             System.out.println("3.Salir");
             System.out.println("Elige una de las opciones");
-            opcion = validacionNumero();
+            opcion = Utils.validacionNumero(miScanner);
 
             switch (opcion) {
-                case 1:
+                case 1 -> {
                     cobrarCompra();
                     continuar = false;
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     obtenerCajaDia();
                     continuar = false;
-                    break;
-                case 3:
-                    continuar = false;
-                    break;
-                default:
+                }
+                case 3 -> continuar = false;
+                default -> {
                     System.out.println("Solo puedes introducir 1 , 2 y 3");
                     continuar = true;
+                }
             }
         }
 
     }
 
-    private void obtenerCajaDia() {
+    private void obtenerCajaDia() throws IOException, ClassNotFoundException {
+        Date date = Calendar.getInstance().getTime();
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        System.out.println();
+        System.out.println("La caja del " + formatter.format(date));
+
+        new DataOutputStream(salida).writeUTF("Caja");
+
+        String mensaje = new DataInputStream(entrada).readUTF();
+
+        if (mensaje.equals("ko")) {
+            System.out.println("No has realizado ningún cobro hoy aún");
+        } else {
+            System.out.println("Ha sido lo siguiente: " + mensaje + " €.");
+        }
+
+        System.out.println();
+
+        menu();
     }
 
-    private void cobrarCompra() throws IOException {
-        boolean continuar = true;
+    private void cobrarCompra() throws IOException, ClassNotFoundException {
+        new DataOutputStream(salida).writeUTF("Productos");
+
+        ArrayList<Producto> miProductos = (ArrayList<Producto>) new ObjectInputStream(entrada).readObject();
 
         System.out.println("ARTÍCULOS DE LOS BUENOS:");
-        while (continuar) {
-            System.out.println("1.Disco duro");
-            System.out.println("2.USB");
-            System.out.println("3.Monitor");
-            System.out.println("4.Ratón");
-            System.out.println("Seleccione el artículo que desea:");
 
-            opcionProducto = validacionNumero();
-
-            switch (opcionProducto) {
-                case 1:
-                    comprarDisco();
-                    continuar = false;
-                    break;
-                case 2:
-                    comprarUSB();
-                    continuar = false;
-                    break;
-                case 3:
-                    comprarMonitor();
-                    continuar = false;
-                    break;
-                case 4:
-                    comprarRaton();
-                    continuar = false;
-                    break;
-                default:
-                    System.out.println("Solo puedes introducir 1 , 2 , 3 y 4");
-                    continuar = true;
-            }
+        for (int i = 0; i < miProductos.size(); i++) {
+            Producto miProductito = miProductos.get(i);
+            System.out.println((i + 1) + ". " + miProductito.getNombreProducto());
         }
-    }
 
-    private void comprarRaton() throws IOException {
+        System.out.println("Seleccione el artículo que desea:");
+
+        int opcionProducto = Utils.validacionNumero(miScanner,4);
+        int idProducto = miProductos.get(opcionProducto - 1).getIdProducto();
+
         System.out.println("¿Cuántas unidades?");
-        cantidad = validacionNumero();
 
-        // CREO FLUJO DE SALIDA AL SERVIDOR
-        DataOutputStream flujoSalida = new DataOutputStream(salida);
+        int cantidad = Utils.validacionNumero(miScanner);
 
-        // ENVIO el login al servidor
-        flujoSalida.writeUTF("Cobro;"+opcionProducto+";"+cantidad);
+        String mensaje = "Cobro;" + idProducto + ";" + cantidad;
 
-        // CREO FLUJO DE ENTRADA AL SERVIDOR
-        ObjectInputStream flujoEntrada = new ObjectInputStream(entrada);
+        new DataOutputStream(salida).writeUTF(mensaje);
 
-    }
+        String recibir = new DataInputStream(entrada).readUTF();
 
-    private void comprarMonitor() {
-        System.out.println("¿Cuántas unidades?");
-        cantidad = validacionNumero();
-    }
+        System.out.println(recibir);
 
-    private void comprarUSB() {
-        System.out.println("¿Cuántas unidades?");
-        cantidad = validacionNumero();
-    }
-
-    private void comprarDisco() {
-        System.out.println("¿Cuántas unidades?");
-        cantidad = validacionNumero();
-    }
-
-    /**
-     * Método que valida los números introducido por el usuario sea número y no string.
-     * @return
-     */
-    private static int validacionNumero() {
-        boolean comprobar = false;
-        int numero = 0;
-        while (!comprobar) {
-            try {
-                numero = Integer.parseInt(miScanner.nextLine());
-                comprobar = true;
-            } catch (Exception e) {
-                System.err.println("Debes introducir un número");
-            }
-        }
-        return numero;
+        menu();
     }
 
 }

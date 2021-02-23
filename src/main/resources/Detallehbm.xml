@@ -5,18 +5,10 @@
 <hibernate-mapping>
 
     <class name="Modelos.Detalle" table="detalle" schema="supermarkt">
-        <id name="idDetalle">
-            <column name="idDetalle" sql-type="int(11)"/>
-        </id>
-        <property name="cantidadVenta">
-            <column name="cantidadVenta" sql-type="int(11)" not-null="true"/>
-        </property>
-        <property name="idProducto">
-            <column name="idProducto" sql-type="int(11)" not-null="true"/>
-        </property>
-        <property name="idCompra">
-            <column name="idCompra" sql-type="int(11)" not-null="true"/>
-        </property>
+        <id name="idDetalle" column="idDetalle"/>
+        <property name="cantidadVenta" column="cantidadVenta"/>
+        <property name="idProducto" column="idProducto"/>
+        <property name="idCompra" column="idCompra"/>
         <many-to-one name="productoByIdProducto" class="Modelos.Producto" insert="false" update="false">
             <column name="idProducto" not-null="true"/>
         </many-to-one>

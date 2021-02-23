@@ -11,6 +11,14 @@ public class Producto implements Serializable {
     private Integer cantidadStock;
     private Collection<Detalle> detallesByIdProducto;
 
+    public Producto() {
+    }
+
+    public Producto(int idProducto, Integer cantidadStock) {
+        this.idProducto = idProducto;
+        this.cantidadStock = cantidadStock;
+    }
+
     public int getIdProducto() {
         return idProducto;
     }
@@ -51,14 +59,6 @@ public class Producto implements Serializable {
         this.cantidadStock = cantidadStock;
     }
 
-    public Producto() {
-    }
-
-    public Producto(int idProducto, Integer cantidadStock) {
-        this.idProducto = idProducto;
-        this.cantidadStock = cantidadStock;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,5 +95,9 @@ public class Producto implements Serializable {
 
     public void setDetallesByIdProducto(Collection<Detalle> detallesByIdProducto) {
         this.detallesByIdProducto = detallesByIdProducto;
+    }
+
+    public void restarCantidad(int cantidad) {
+        this.cantidadStock-=cantidad;
     }
 }

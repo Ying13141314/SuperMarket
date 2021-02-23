@@ -5,21 +5,11 @@
 <hibernate-mapping>
 
     <class name="Modelos.Producto" table="producto" schema="supermarkt">
-        <id name="idProducto">
-            <column name="idProducto" sql-type="int(11)"/>
-        </id>
-        <property name="nombreProducto">
-            <column name="nombreProducto" sql-type="varchar(50)" length="50" not-null="true"/>
-        </property>
-        <property name="precioVenta">
-            <column name="precioVenta" sql-type="decimal(10)" precision="10" not-null="true"/>
-        </property>
-        <property name="precioProveedor">
-            <column name="precioProveedor" sql-type="decimal(10)" precision="10" not-null="true"/>
-        </property>
-        <property name="cantidadStock">
-            <column name="cantidadStock" sql-type="int(11)" not-null="true"/>
-        </property>
+        <id name="idProducto" column="idProducto"/>
+        <property name="nombreProducto" column="nombreProducto"/>
+        <property name="precioVenta" column="precioVenta"/>
+        <property name="precioProveedor" column="precioProveedor"/>
+        <property name="cantidadStock" column="cantidadStock"/>
         <set name="detallesByIdProducto" inverse="true">
             <key>
                 <column name="idProducto" not-null="true"/>

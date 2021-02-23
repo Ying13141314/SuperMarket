@@ -5,18 +5,10 @@
 <hibernate-mapping>
 
     <class name="Modelos.Empleado" table="empleado" schema="supermarkt">
-        <id name="idEmpleado">
-            <column name="idEmpleado" sql-type="int(11)"/>
-        </id>
-        <property name="ultimaSesion">
-            <column name="ultimaSesion" sql-type="datetime" not-null="true"/>
-        </property>
-        <property name="fechaContratacion">
-            <column name="fechaContratacion" sql-type="date" not-null="true"/>
-        </property>
-        <property name="login">
-            <column name="login" sql-type="varchar(50)" length="50" not-null="true"/>
-        </property>
+        <id name="idEmpleado" column="idEmpleado"/>
+        <property name="ultimaSesion" column="ultimaSesion"/>
+        <property name="fechaContratacion" column="fechaContratacion"/>
+        <property name="login" column="login"/>
         <set name="comprasByIdEmpleado" inverse="true">
             <key>
                 <column name="idEmpleado" not-null="true"/>

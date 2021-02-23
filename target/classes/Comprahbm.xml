@@ -5,15 +5,9 @@
 <hibernate-mapping>
 
     <class name="Modelos.Compra" table="compra" schema="supermarkt">
-        <id name="idCompra">
-            <column name="idCompra" sql-type="int(11)"/>
-        </id>
-        <property name="fecha">
-            <column name="fecha" sql-type="date"/>
-        </property>
-        <property name="idEmpleado">
-            <column name="idEmpleado" sql-type="int(11)" not-null="true"/>
-        </property>
+        <id name="idCompra" column="idCompra"/>
+        <property name="fecha" column="fecha"/>
+        <property name="idEmpleado" column="idEmpleado"/>
         <many-to-one name="empleadoByIdEmpleado" class="Modelos.Empleado" insert="false" update="false">
             <column name="idEmpleado" not-null="true"/>
         </many-to-one>

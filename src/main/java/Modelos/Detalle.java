@@ -10,6 +10,15 @@ public class Detalle implements Serializable {
     private Producto productoByIdProducto;
     private Compra compraByIdCompra;
 
+    public Detalle(){
+
+    }
+    public Detalle(Integer cantidadVenta, Integer idProducto, Integer idCompra) {
+        this.cantidadVenta = cantidadVenta;
+        this.idProducto = idProducto;
+        this.idCompra = idCompra;
+    }
+
     public int getIdDetalle() {
         return idDetalle;
     }

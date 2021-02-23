@@ -1,15 +1,23 @@
 package Modelos;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 public class Compra implements Serializable {
     private int idCompra;
-    private Date fecha;
+    private Timestamp fecha;
     private Integer idEmpleado;
     private Empleado empleadoByIdEmpleado;
     private Collection<Detalle> detallesByIdCompra;
+
+    public Compra() {
+    }
+
+    public Compra(Timestamp fecha, Integer idEmpleado) {
+        this.fecha = fecha;
+        this.idEmpleado = idEmpleado;
+    }
 
     public int getIdCompra() {
         return idCompra;
@@ -19,11 +27,11 @@ public class Compra implements Serializable {
         this.idCompra = idCompra;
     }
 
-    public Date getFecha() {
+    public Timestamp getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
 
@@ -32,14 +40,6 @@ public class Compra implements Serializable {
     }
 
     public void setIdEmpleado(Integer idEmpleado) {
-        this.idEmpleado = idEmpleado;
-    }
-
-    public Compra() {
-    }
-
-    public Compra(Date fecha, Integer idEmpleado) {
-        this.fecha = fecha;
         this.idEmpleado = idEmpleado;
     }
 
