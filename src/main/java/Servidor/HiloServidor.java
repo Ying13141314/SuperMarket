@@ -94,6 +94,12 @@ public class HiloServidor extends Thread {
         Query<Empleado> query = session.createQuery("select e from Empleado e where e.id = :id", Empleado.class);
         query.setParameter("id", Integer.parseInt(entrada[1]));
         empleado = query.uniqueResult();
+        if (empleado != null) {
+            empleado.actualizarFechaSession();
+            session.getTransaction().begin();
+            session.update(empleado);
+            session.getTransaction().commit();
+        }
 
         flujoSalida.writeObject(empleado);
     }
@@ -182,4 +188,5 @@ public class HiloServidor extends Thread {
         }
 
     }
+
 }

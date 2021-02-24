@@ -3,6 +3,7 @@ package Modelos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
 
 public class Empleado implements Serializable {
@@ -86,5 +87,13 @@ public class Empleado implements Serializable {
                 ", fechaContratacion=" + fechaContratacion +
                 ", login='" + login + '\'' +
                 '}';
+    }
+
+    public void actualizarFechaSession() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new java.util.Date());
+        calendar.add(Calendar.HOUR, 1);
+
+        this.ultimaSesion = new Timestamp(calendar.getTimeInMillis());
     }
 }
