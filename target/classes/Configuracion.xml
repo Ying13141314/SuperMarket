@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<AppConfig>
+    <EmailFrom>from@example.com</EmailFrom>
+    <EmailEmergencia>LaQueSeHaLiado@SOS.com</EmailEmergencia>
+    <EmailUsuario>e2d31d7403ca6f</EmailUsuario>
+    <EmailContrasena>abb9420872c7c6</EmailContrasena>
+    <EmailHost>smtp.mailtrap.io</EmailHost>
+</AppConfig>

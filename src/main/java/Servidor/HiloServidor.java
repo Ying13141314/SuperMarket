@@ -16,6 +16,7 @@ import java.util.List;
 
 public class HiloServidor extends Thread {
 
+
     private final Session session;
     private final Socket cliente;
     private final InputStream entrada;
@@ -23,6 +24,11 @@ public class HiloServidor extends Thread {
 
     private Empleado empleado;
 
+    /**
+     * Constructor del hilo servidor
+     * @param cliente
+     * @throws IOException
+     */
     public HiloServidor(Socket cliente) throws IOException {
         HibernateUtil.openSession();
         session = HibernateUtil.getSession();
@@ -31,12 +37,19 @@ public class HiloServidor extends Thread {
         salida = cliente.getOutputStream(); // CREO FLUJO DE SALIDA AL CLIENTE
     }
 
+    /**
+     * Al ser hilo este método se ejecuta cuando le decimos start en el servidor.
+     */
     @Override
     public void run() {
         try {
             while (true) {
+                //Creamos un nuevo dataInputStream
                 DataInputStream flujoEntrada = new DataInputStream(entrada);
+
+                //Spliteamos la información que nos ha llegado por el flujo de entrada.
                 String[] primeraParte = flujoEntrada.readUTF().split(";");
+
                 if (primeraParte[0].contains("Login")) {
                     runLogin(primeraParte);
                 } else if (primeraParte[0].contains("Productos")) {
@@ -55,6 +68,9 @@ public class HiloServidor extends Thread {
 
     }
 
+    /**
+     * Metodo que cierra los socket y stream.
+     */
     private void cerrar() {
         try {
             salida.close();
@@ -65,6 +81,13 @@ public class HiloServidor extends Thread {
         }
     }
 
+    /**
+     * Método que realiza el login , que guardamos el resultado en el objeto empleado.
+     * Guardará null si el id no ha sido encontrado.
+     * si existe el id guardará toda la información del empleado.
+     * @param entrada
+     * @throws IOException
+     */
     private void runLogin(String[] entrada) throws IOException {
         ObjectOutputStream flujoSalida = new ObjectOutputStream(salida);
 
@@ -75,6 +98,10 @@ public class HiloServidor extends Thread {
         flujoSalida.writeObject(empleado);
     }
 
+    /**
+     * Método que realiza una consulta del producto y guardarlo en una lista.
+     * @throws IOException
+     */
     private void runProductos() throws IOException {
         Query<Producto> query = session.createQuery("select p from Producto p", Producto.class);
         List<Producto> productos = query.list();
@@ -82,11 +109,16 @@ public class HiloServidor extends Thread {
         new ObjectOutputStream(salida).writeObject(productos);
     }
 
+    /**
+     * Método que realiza el cobro
+     * @param entrada
+     * @throws IOException
+     */
     private void runCobro(String[] entrada) throws IOException {
         int productoId = Integer.parseInt(entrada[1]);
         int cantidad = Integer.parseInt(entrada[2]);
 
-        // Restamos la cantidad al producto
+        // Restamos la cantidad al producto en el bbdd.
         Query<Producto> query = session.createQuery("select p from Producto p where p.id = :id", Producto.class);
         query.setParameter("id",productoId);
         Producto producto = query.uniqueResult();
@@ -126,7 +158,10 @@ public class HiloServidor extends Thread {
         new DataOutputStream(salida).writeUTF("Compra realizada!!");
     }
 
-
+    /**
+     * Método que realiza una consulta
+     * @throws IOException
+     */
     private void runCaja() throws IOException {
 
         Query query = session.createQuery("SELECT SUM((P.precioVenta - P.precioProveedor) * D.cantidadVenta) " +

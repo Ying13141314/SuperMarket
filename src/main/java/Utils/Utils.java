@@ -23,7 +23,12 @@ public class Utils {
         return numero;
     }
 
-
+    /**
+     * Método que valida los números introducido por el usuario sea número y no string.
+     * @param miScanner
+     * @param numeroValido
+     * @return número que da el usuario
+     */
     public static int validacionNumero(Scanner miScanner, int numeroValido) {
         int numero = 0;
         boolean continuar = true;

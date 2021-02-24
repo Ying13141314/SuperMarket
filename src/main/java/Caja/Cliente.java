@@ -27,13 +27,23 @@ public class Cliente {
      */
     private int idEmpleado;
 
-
+    /**
+     * Varia inputStream en el estado porque lo necesitamos en varios partes del programa.
+     */
     private final InputStream entrada;
 
+    /**
+     * Varia OutputStream en el estado porque lo necesitamos en varios partes del programa.
+     */
     private final OutputStream salida;
 
-
+    /**
+     * Constructor de la clase Cliente.
+     * @throws IOException
+     */
     public Cliente() throws IOException {
+
+        //Iniciamos
         miScanner = new Scanner(System.in);
         cliente= new Socket(Host, Puerto);
         entrada = cliente.getInputStream(); // CREO FLUJO DE ENTRADA DEL CLIENTE
@@ -41,11 +51,13 @@ public class Cliente {
     }
 
 
-
+    /**
+     * Método principal que realiza el login del empleado
+     * @throws Exception
+     */
     public void principal() throws Exception {
 
         System.out.println("PROGRAMA CLIENTE INICIADO....");
-
 
         // CREO FLUJO DE SALIDA AL SERVIDOR
         DataOutputStream flujoSalida = new DataOutputStream(salida);
@@ -58,6 +70,8 @@ public class Cliente {
         // CREO FLUJO DE ENTRADA AL SERVIDOR
         ObjectInputStream flujoEntrada = new ObjectInputStream(entrada);
 
+        //Si lo que nos pasa por servidor es nulo significa que ha introducido un id incorrecto,
+        // si nos devuelve el objeto empleado me muestra lo siguiente menu.
         if (flujoEntrada.readObject() != null){
             menu();
         }else{
@@ -68,7 +82,11 @@ public class Cliente {
 
     }// fin de main
 
-
+    /**
+     * Método menu que muestra un menu de las cosas que se puede realizar después de haber logueado.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void menu() throws IOException, ClassNotFoundException {
         int opcion;
         boolean continuar = true;
@@ -100,6 +118,11 @@ public class Cliente {
 
     }
 
+    /**
+     * Método que obtiene los dineros obtenido de cada dia.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void obtenerCajaDia() throws IOException, ClassNotFoundException {
         Date date = Calendar.getInstance().getTime();
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -111,6 +134,7 @@ public class Cliente {
 
         String mensaje = new DataInputStream(entrada).readUTF();
 
+        //Si lo que nos llegan ko significa que hoy aún no se ha realizado ningún cobro.
         if (mensaje.equals("ko")) {
             System.out.println("No has realizado ningún cobro hoy aún");
         } else {
@@ -122,11 +146,17 @@ public class Cliente {
         menu();
     }
 
+    /**
+     * Método que realiza el cobro del producto.
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private void cobrarCompra() throws IOException, ClassNotFoundException {
         new DataOutputStream(salida).writeUTF("Productos");
 
         ArrayList<Producto> miProductos = (ArrayList<Producto>) new ObjectInputStream(entrada).readObject();
 
+        //Mostrar el menu de los productos que estoy vendiendo.
         System.out.println("ARTÍCULOS DE LOS BUENOS:");
 
         for (int i = 0; i < miProductos.size(); i++) {

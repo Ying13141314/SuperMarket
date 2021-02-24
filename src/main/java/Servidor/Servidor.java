@@ -1,5 +1,7 @@
 package Servidor;
 
+import Utils.Mail;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,6 +13,7 @@ public class Servidor {
         ServerSocket servidor = new ServerSocket(6000);
         System.out.println("Servidor iniciado...");
         HibernateUtil.buildSessionFactory();
+        Mail.configurar();
 
         while (true) {
             Socket cliente = servidor.accept();//esperando cliente
