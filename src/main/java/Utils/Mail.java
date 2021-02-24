@@ -16,6 +16,10 @@ public class Mail {
     private static String from;
     private static Session session;
 
+    /**
+     * Método que configura la variable necesaria para que el envio del email.
+     * Algunas de estas variables se obtiene del archivo de configuracion.xml.
+     */
     public static void configurar() {
         File xml = new File("src/main/resources/Configuracion.xml");
 

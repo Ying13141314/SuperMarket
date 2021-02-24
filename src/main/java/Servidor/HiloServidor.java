@@ -38,6 +38,7 @@ public class HiloServidor extends Thread {
     }
 
     /**
+     * Método principal de la clase donde lee la entrada del cliente y según ésta se ejecuta el método correspondiente.
      * Al ser hilo este método se ejecuta cuando le decimos start en el servidor.
      */
     @Override
@@ -84,7 +85,7 @@ public class HiloServidor extends Thread {
     /**
      * Método que realiza el login , que guardamos el resultado en el objeto empleado.
      * Guardará null si el id no ha sido encontrado.
-     * si existe el id guardará toda la información del empleado.
+     * si existe el empleado actualizará la fecha de última sessión.
      * @param entrada
      * @throws IOException
      */
@@ -105,7 +106,7 @@ public class HiloServidor extends Thread {
     }
 
     /**
-     * Método que realiza una consulta del producto y guardarlo en una lista.
+     * Método que enviar la lista de los productos al cliente.
      * @throws IOException
      */
     private void runProductos() throws IOException {
@@ -116,7 +117,8 @@ public class HiloServidor extends Thread {
     }
 
     /**
-     * Método que realiza el cobro
+     * A partir de los datos del cliente se genera un registro en compra, otro en detalle y se actualiza la cantidad de producto.
+     * Si el producto llega una cantidad negativa , se enviará un email.
      * @param entrada
      * @throws IOException
      */
@@ -165,7 +167,8 @@ public class HiloServidor extends Thread {
     }
 
     /**
-     * Método que realiza una consulta
+     * Envia la caja del día al cliente , esto es , la diferencia entre el precio del producto y el precio del proveedor
+     * multiplicado por la cantidad de productos vendido.
      * @throws IOException
      */
     private void runCaja() throws IOException {

@@ -8,6 +8,12 @@ import java.net.Socket;
 
 public class Servidor {
 
+    /**
+     * Punto de entrada del servidor multihilo, por cada cliente que se conecta se genera un hilo que es capaz de gestionarlo.
+     * aqui también se inicia la configuración del email y de hibernate.
+     * @param args
+     * @throws IOException
+     */
     public static void main(String args[]) throws IOException {
 
         ServerSocket servidor = new ServerSocket(6000);

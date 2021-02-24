@@ -6,7 +6,7 @@ public class Utils {
 
     /**
      * Método que valida los números introducido por el usuario sea número y no string.
-     * @return número que da el usuario
+     * @return número que da el usuario.
      */
     public static int validacionNumero(Scanner miScanner) {
         boolean comprobar = false;
@@ -25,6 +25,7 @@ public class Utils {
 
     /**
      * Método que valida los números introducido por el usuario sea número y no string.
+     * Además el número debe ser menor o igual al parámetro número 4.
      * @param miScanner
      * @param numeroValido
      * @return número que da el usuario
@@ -41,7 +42,6 @@ public class Utils {
                 continuar = true;
             }
         }
-
         return numero;
     }
 

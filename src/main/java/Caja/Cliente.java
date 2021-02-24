@@ -38,12 +38,10 @@ public class Cliente {
     private final OutputStream salida;
 
     /**
-     * Constructor de la clase Cliente.
+     * Constructor de la clase Cliente. Iniciamos los flujos y el escanner
      * @throws IOException
      */
     public Cliente() throws IOException {
-
-        //Iniciamos
         miScanner = new Scanner(System.in);
         cliente= new Socket(Host, Puerto);
         entrada = cliente.getInputStream(); // CREO FLUJO DE ENTRADA DEL CLIENTE
@@ -52,12 +50,12 @@ public class Cliente {
 
 
     /**
-     * Método principal que realiza el login del empleado
+     * Método inicial del cliente. Controla el login y que éste sea correcto. Si el login es exitoso se continua con
+     * la aplicación.
      * @throws Exception
      */
-    public void principal() throws Exception {
-
-        System.out.println("PROGRAMA CLIENTE INICIADO....");
+    public void principal() throws IOException, ClassNotFoundException {
+        System.out.println("Iniciando caja....");
 
         // CREO FLUJO DE SALIDA AL SERVIDOR
         DataOutputStream flujoSalida = new DataOutputStream(salida);
@@ -70,7 +68,7 @@ public class Cliente {
         // CREO FLUJO DE ENTRADA AL SERVIDOR
         ObjectInputStream flujoEntrada = new ObjectInputStream(entrada);
 
-        //Si lo que nos pasa por servidor es nulo significa que ha introducido un id incorrecto,
+        // Si lo que nos pasa por servidor es nulo significa que ha introducido un id incorrecto,
         // si nos devuelve el objeto empleado me muestra lo siguiente menu.
         if (flujoEntrada.readObject() != null){
             menu();
@@ -78,12 +76,11 @@ public class Cliente {
             System.out.println("Id incorrecto,por favor, introduce un id correcto\n");
             principal();
         }
-
-
-    }// fin de main
+    }
 
     /**
-     * Método menu que muestra un menu de las cosas que se puede realizar después de haber logueado.
+     * Método que despliega el menu con todas las opciones que se pueden llevar a cabo. Según lo que escoja el usuario
+     * se llama al método que haga falta.
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -119,7 +116,8 @@ public class Cliente {
     }
 
     /**
-     * Método que obtiene los dineros obtenido de cada dia.
+     * Le pide al servidor que calcule el dinero ganado del día y lo muestra por la pantalla, si llega,
+     * en otro caso muestra mensaje altenativo.
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -147,7 +145,8 @@ public class Cliente {
     }
 
     /**
-     * Método que realiza el cobro del producto.
+     * le da al usuario escoger entre los productos disponible y pregunta sobre la cantidad que quiere comprar del escogido.
+     * Este información será enviado al servidor para procesarla.
      * @throws IOException
      * @throws ClassNotFoundException
      */
